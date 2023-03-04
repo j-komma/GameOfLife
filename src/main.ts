@@ -8,7 +8,7 @@ const emptyCell: string = ' ';
 const fieldRows: number = 10;
 const fieldCols: number = 50;
 
-const fieldGenerator: Field = new Field(fieldRows, fieldCols);
+const fieldGenerator: Field = new Field(fieldRows, fieldCols, aliveCell, emptyCell);
 
 fieldGenerator.initRandom();
 

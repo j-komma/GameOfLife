@@ -11,7 +11,7 @@ export class GameOfLife {
     }
 
     async play() {
-        var tempField = new Field(this.field.rows, this.field.cols);
+        var tempField = this.field;
 
         this.field.field.forEach(row => {
             row.forEach(cell => {

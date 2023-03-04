@@ -75,7 +75,7 @@ export class Field {
             for (let j = 0; j < this.field[i].length; j++) {
                 const random: number = Math.floor(Math.random() * 100) + 1;
 
-                if (random >= 70) {
+                if (random >= 80) {
                     this.field[i][j].relive();
                 }
             }
