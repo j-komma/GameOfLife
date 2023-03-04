@@ -1,5 +1,4 @@
 import { Field } from "./field";
-import logUpdate from "log-update";
 
 const aliveCell: string = 'X';
 const emptyCell: string = '-';
@@ -9,10 +8,8 @@ const fieldCols: Number = 10;
 
 const fieldGenerator: Field = new Field(fieldRows, fieldCols);
 
-var field = fieldGenerator.initRandom(emptyCell, aliveCell);
+fieldGenerator.initRandom();
 
-const printField: string = field.map(row => row.join('')).join('\n');
-
-// logUpdate(printField);
+const printField: string = fieldGenerator.print(aliveCell, emptyCell);
 
 console.log(printField);
