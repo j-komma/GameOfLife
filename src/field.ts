@@ -59,9 +59,13 @@ export class Field {
                     this.field[i][j].relive();
                 }
             }
-            
         }
+    }
 
+    initSeed(seedArray: Cell[]) {
+        seedArray.forEach(cell => {
+            this.field[cell.xPos][cell.yPos].alive = true;
+        })
     }
 
     print(aliveIndicator: string, emptyIndicator: string): string {

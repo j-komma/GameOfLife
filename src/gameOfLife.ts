@@ -24,11 +24,10 @@ export class GameOfLife {
     
             this.field = tempField;
 
-            // console.clear();
             console.clear();
             console.log(this.field.print('X', ' '));
 
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            await new Promise(resolve => setTimeout(resolve, 200));
 
             if (isSame) {
                 break;
@@ -41,11 +40,13 @@ export class GameOfLife {
     validateCell(cell: Cell): boolean {
         const neighbors: number = this.field.getNeighborsOfCell(cell);
 
+        // console.log("Cell: " + cell.xPos + " / " + cell.yPos + " : " + neighbors);
+
         if (cell.alive && neighbors == 2 || neighbors == 3) {
             return true;
         }
 
-        if (!cell.alive && neighbors == 2) {
+        if (!cell.alive && neighbors == 3) {
             return true;
         }
 
