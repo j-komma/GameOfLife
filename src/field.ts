@@ -8,6 +8,24 @@ export class Field {
 
     private _field: Cell[][];
 
+    private _aliveIndicator: string;
+
+    private _emptyIndicator: string;
+
+    public get aliveIndicator(): string {
+        return this._aliveIndicator;
+    }
+    public set aliveIndicator(value: string) {
+        this._aliveIndicator = value;
+    }
+
+    public get emptyIndicator(): string {
+        return this._emptyIndicator;
+    }
+    public set emptyIndicator(value: string) {
+        this._emptyIndicator = value;
+    }
+
     public get rows(): number {
         return this._rows;
     }
@@ -29,9 +47,11 @@ export class Field {
         this._field = value;
     }
 
-    constructor(rows: number, cols: number) {
+    constructor(rows: number, cols: number, aliveIndicator: string, emptyIndicator: string) {
         this._rows = rows;
         this._cols = cols;
+        this._aliveIndicator = aliveIndicator;
+        this._emptyIndicator = emptyIndicator;
         this._field = this.initEmpty();
     }
 
@@ -68,15 +88,15 @@ export class Field {
         })
     }
 
-    print(aliveIndicator: string, emptyIndicator: string): string {
+    print(): string {
         var output: string = '';
 
         for (let i = 0; i < this.field.length; i++) {
             for (let j = 0; j < this.field[i].length; j++) {
                 if (this.field[i][j].alive) {
-                    output += aliveIndicator;
+                    output += this.aliveIndicator;
                 } else {
-                    output += emptyIndicator;
+                    output += this.emptyIndicator;
                 }
             }
             output += '\n';

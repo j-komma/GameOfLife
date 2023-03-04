@@ -1,5 +1,6 @@
 import { Cell } from "./cell";
 import { Field } from "./field";
+import logUpdate from 'log-update';
 
 export class GameOfLife {
 
@@ -10,31 +11,19 @@ export class GameOfLife {
     }
 
     async play() {
-       
-        do {
-            var tempField = new Field(this.field.rows, this.field.cols);
+        var tempField = new Field(this.field.rows, this.field.cols);
 
-            this.field.field.forEach(row => {
-                row.forEach(cell => {
-                    tempField.field[cell.xPos][cell.yPos].alive = this.validateCell(cell);
-                })
+        this.field.field.forEach(row => {
+            row.forEach(cell => {
+                tempField.field[cell.xPos][cell.yPos].alive = this.validateCell(cell);
             })
+        })
 
-            const isSame = this.field == tempField;
-    
-            this.field = tempField;
+        const isSame = this.field == tempField;
 
-            console.clear();
-            console.log(this.field.print('X', ' '));
+        this.field = tempField;
 
-            await new Promise(resolve => setTimeout(resolve, 200));
-
-            if (isSame) {
-                break;
-            }
-        } while(true);
-        
-       
+        logUpdate(this.field.print());
     }
 
     validateCell(cell: Cell): boolean {
