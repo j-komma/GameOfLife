@@ -1,10 +1,15 @@
 export class Cell {
 
+    // Properties
+
     private _alive: boolean;
 
     private _xPos: number;
 
     private _yPos: number;
+
+
+    // Getter / Setter
 
     public get yPos(): number {
         return this._yPos;
@@ -30,18 +35,10 @@ export class Cell {
         this._alive = value;
     }
 
+
     constructor(xPos: number, yPos: number, alive: boolean) {
         this._xPos = xPos;
         this._yPos = yPos;
         this._alive = alive;
     }
-
-    kill() {
-        this.alive = false;
-    }
-
-    relive() {
-        this.alive = true;
-    }
-
 }
