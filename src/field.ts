@@ -93,7 +93,7 @@ export class Field {
                 // get a random number between 1 - 100
                 const random: number = Math.floor(Math.random() * 100) + 1;
 
-                if (random >= 80) {
+                if (random >= 85) {
                     this.field[i][j].alive = true;
                 }
             }
@@ -166,5 +166,23 @@ export class Field {
         }
 
         return this.field[xPos][yPos].alive;
+    }
+
+    /**
+     * Compares two fields
+     * @param compareField field to check with
+     * @returns true if identic, false otherwise
+     */
+    compare(compareField: Field): boolean {
+        for (let i = 0; i < this.field.length; i++) {
+            for (let j = 0; j < this.field[i].length; j++) {
+                if (this.field[i][j].alive != compareField.field[i][j].alive) {
+                    return false;
+                }
+            }
+            
+        }
+
+        return true;
     }
 }

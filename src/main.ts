@@ -17,10 +17,11 @@ const fieldGenerator: Field = new Field(fieldRows, fieldCols, aliveCell, emptyCe
 fieldGenerator.initRandom();
 
 // const seed: Cell[] = [
-//     new Cell(1, 1, true),
-//     new Cell(2, 2, true),
+//     new Cell(1, 2, true),
+//     new Cell(2, 1, true),
+//     new Cell(2, 3, true),
+//     new Cell(3, 2, true),
 //     new Cell(3, 3, true),
-//     new Cell(4, 4, true),
 // ]
 
 // fieldGenerator.initSeed(seed);
