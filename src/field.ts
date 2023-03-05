@@ -102,12 +102,13 @@ export class Field {
 
     /**
      * Turn provided Cells alive
-     * @param seedArray Array of Cells which should be alive
+     * @param seedArray Array of coordinates which cells should be alive
      */
-    initSeed(seedArray: Cell[]) {
-        seedArray.forEach(cell => {
-            this.field[cell.xPos][cell.yPos].alive = true;
-        })
+    initSeed(seedArray: string[]) {
+        seedArray.forEach(seed => {
+            const cords = seed.split(',').map(Number);
+            this.field[cords[0]][cords[1]].alive = true;
+        });
     }
 
     /**

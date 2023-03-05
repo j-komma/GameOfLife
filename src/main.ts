@@ -1,8 +1,21 @@
+#!/usr/bin/env node
+
 import { Cell } from "./cell";
 import { Field } from "./field";
 import { GameOfLife } from "./gameOfLife";
+import yargs, { Argv } from 'yargs';
+import { hideBin } from 'yargs/helpers';
+import * as fs from 'fs';
 
 // make some base settings
+
+const argv = yargs(hideBin(process.argv))
+    .option('seed', {
+        describe: 'Seed for start of the game',
+        type: 'string'
+    })
+    .help()
+    .argv;
 
 const aliveCell: string = 'X';
 const emptyCell: string = ' ';
@@ -14,17 +27,13 @@ const fieldCols: number = 50;
 const fieldGenerator: Field = new Field(fieldRows, fieldCols, aliveCell, emptyCell);
 
 // init the field with the random initiator
-fieldGenerator.initRandom();
+// fieldGenerator.initRandom();
 
-// const seed: Cell[] = [
-//     new Cell(1, 2, true),
-//     new Cell(2, 1, true),
-//     new Cell(2, 3, true),
-//     new Cell(3, 2, true),
-//     new Cell(3, 3, true),
-// ]
+const seedLocation = './input/seed';
 
-// fieldGenerator.initSeed(seed);
+const seed = fs.readFileSync(seedLocation, 'utf-8').split('\n');
+
+fieldGenerator.initSeed(seed);
 
 // create a new game
 const game: GameOfLife = new GameOfLife(fieldGenerator);
