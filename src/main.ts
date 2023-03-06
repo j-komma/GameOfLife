@@ -1,39 +1,46 @@
 #!/usr/bin/env node
 
-import { Cell } from "./cell";
 import { Field } from "./field";
 import { GameOfLife } from "./gameOfLife";
 import yargs, { Argv } from 'yargs';
-import { hideBin } from 'yargs/helpers';
 import * as fs from 'fs';
 
-// make some base settings
-
-const argv = yargs(hideBin(process.argv))
-    .option('seed', {
+// get CLA arguments
+const argv = yargs
+    .option('input', {
         describe: 'Seed for start of the game',
-        type: 'string'
+        type: 'string',
+        alias: 'i'
     })
-    .help()
-    .argv;
+    .option('width', {
+        describe: 'width of the field by default the width of the console',
+        type: 'number',
+        alias: 'w',
+        default: process.stdout.columns,
+        
+    })
+    .option('height', {
+        describe: 'height of the field by default the height of the console',
+        type: 'number',
+        alias: 'h',
+        default: process.stdout.rows - 3
+    })
+    .parseSync();
 
+
+// sone default settings
 const aliveCell: string = 'X';
 const emptyCell: string = ' ';
 
-const fieldRows: number = 10;
-const fieldCols: number = 50;
-
 // create a new field
-const fieldGenerator: Field = new Field(fieldRows, fieldCols, aliveCell, emptyCell);
+const fieldGenerator: Field = new Field(argv.height, argv.width, aliveCell, emptyCell);
 
-// init the field with the random initiator
-// fieldGenerator.initRandom();
-
-const seedLocation = './input/seed';
-
-const seed = fs.readFileSync(seedLocation, 'utf-8').split('\n');
-
-fieldGenerator.initSeed(seed);
+if (argv.input) {
+    const seed = fs.readFileSync(argv.input, 'utf-8').split('\n');
+    fieldGenerator.initSeed(seed);
+} else {
+    fieldGenerator.initRandom();
+}
 
 // create a new game
 const game: GameOfLife = new GameOfLife(fieldGenerator);
