@@ -4,6 +4,8 @@ import { Field } from "./field";
 import { GameOfLife } from "./gameOfLife";
 import yargs, { Argv } from 'yargs';
 import * as fs from 'fs';
+import { Cell } from "./cell";
+import { Seed } from "./seed";
 
 // get CLA arguments
 const argv = yargs
@@ -36,8 +38,9 @@ const emptyCell: string = ' ';
 const fieldGenerator: Field = new Field(argv.height, argv.width, aliveCell, emptyCell);
 
 if (argv.input) {
-    const seed = fs.readFileSync(argv.input, 'utf-8').split('\n');
-    fieldGenerator.initSeed(seed);
+    const seed = new Seed(argv.input);
+    const seedCells: Cell[] = seed.cells;
+    fieldGenerator.initSeed(seedCells);
 } else {
     fieldGenerator.initRandom();
 }

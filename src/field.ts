@@ -94,7 +94,7 @@ export class Field {
                 const random: number = Math.floor(Math.random() * 100) + 1;
 
                 if (random >= 85) {
-                    this.field[i][j].alive = true;
+                    this.field[i][j].isAlive = true;
                 }
             }
         }
@@ -104,10 +104,9 @@ export class Field {
      * Turn provided Cells alive
      * @param seedArray Array of coordinates which cells should be alive
      */
-    initSeed(seedArray: string[]) {
-        seedArray.forEach(seed => {
-            const cords = seed.split(',').map(Number);
-            this.field[cords[0]][cords[1]].alive = true;
+    initSeed(cells: Cell[]) {
+        cells.forEach(cell => {
+            this.field[cell.xPos][cell.yPos].isAlive = cell.isAlive;
         });
     }
 
@@ -120,7 +119,7 @@ export class Field {
 
         for (let i = 0; i < this.field.length; i++) {
             for (let j = 0; j < this.field[i].length; j++) {
-                if (this.field[i][j].alive) {
+                if (this.field[i][j].isAlive) {
                     output += this.aliveIndicator;
                 } else {
                     output += this.emptyIndicator;
@@ -166,7 +165,7 @@ export class Field {
             return false;
         }
 
-        return this.field[xPos][yPos].alive;
+        return this.field[xPos][yPos].isAlive;
     }
 
     /**
@@ -177,7 +176,7 @@ export class Field {
     compare(compareField: Field): boolean {
         for (let i = 0; i < this.field.length; i++) {
             for (let j = 0; j < this.field[i].length; j++) {
-                if (this.field[i][j].alive != compareField.field[i][j].alive) {
+                if (this.field[i][j].isAlive != compareField.field[i][j].isAlive) {
                     return false;
                 }
             }

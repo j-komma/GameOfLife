@@ -2,7 +2,7 @@ export class Cell {
 
     // Properties
 
-    private _alive: boolean;
+    private _isAlive: boolean;
 
     private _xPos: number;
 
@@ -27,18 +27,20 @@ export class Cell {
         this._xPos = value;
     }
 
-    public get alive(): boolean {
-        return this._alive;
+    public get isAlive(): boolean {
+        return this._isAlive;
     }
     
-    public set alive(value: boolean) {
-        this._alive = value;
+    public set isAlive(value: boolean) {
+        this._isAlive = value;
     }
 
 
-    constructor(xPos: number, yPos: number, alive: boolean) {
+    constructor(xPos: number, yPos: number, isAlive: boolean) {
         this._xPos = xPos;
         this._yPos = yPos;
-        this._alive = alive;
+        this._isAlive = isAlive;
     }
+
+    
 }

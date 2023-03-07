@@ -24,7 +24,7 @@ export class GameOfLife {
         this.field.field.forEach(row => {
             row.forEach(cell => {
                 // Change the Cells in the tmp field
-                tempField.field[cell.xPos][cell.yPos].alive = this.validateCell(cell);
+                tempField.field[cell.xPos][cell.yPos].isAlive = this.validateCell(cell);
             });
         });
 
@@ -51,11 +51,11 @@ export class GameOfLife {
         const neighbors: number = this.field.getNeighborsOfCell(cell);
 
         // check if the cell will be alive => Conways rules
-        if (cell.alive && neighbors == 2 || neighbors == 3) {
+        if (cell.isAlive && neighbors == 2 || neighbors == 3) {
             return true;
         }
 
-        if (!cell.alive && neighbors == 3) {
+        if (!cell.isAlive && neighbors == 3) {
             return true;
         }
 
