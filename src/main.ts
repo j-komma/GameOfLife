@@ -38,6 +38,7 @@ const emptyCell: string = ' ';
 const fieldGenerator: Field = new Field(argv.height, argv.width, aliveCell, emptyCell);
 
 if (argv.input) {
+    // read seed-file and init the field
     const seed = new Seed(argv.input);
     const seedCells: Cell[] = seed.cells;
     fieldGenerator.initSeed(seedCells);

@@ -102,7 +102,7 @@ export class Field {
 
     /**
      * Turn provided Cells alive
-     * @param seedArray Array of coordinates which cells should be alive
+     * @param seedArray Array of cells which should be alive
      */
     initSeed(cells: Cell[]) {
         cells.forEach(cell => {
@@ -161,6 +161,8 @@ export class Field {
      * @returns true if the cell is currently alive
      */
     private checkCellAt(xPos: number, yPos: number): boolean {
+
+        // if cell is outside the filed return false 
         if (!this.field[xPos] || !this.field[xPos][yPos]) {
             return false;
         }
