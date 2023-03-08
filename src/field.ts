@@ -14,6 +14,10 @@ export class Field {
 
     private _emptyIndicator: string;
 
+    private _infinite: boolean;
+
+    private _randomness: number;
+
 
     // Getter / Setter
 
@@ -57,48 +61,71 @@ export class Field {
         this._field = value;
     }
 
+    public get infinite(): boolean {
+        return this._infinite;
+    }
 
-    constructor(rows: number, cols: number, aliveIndicator: string, emptyIndicator: string) {
+    public set infinite(value: boolean) {
+        this._infinite = value;
+    }
+
+    public get randomness(): number {
+        return this._randomness;
+    }
+
+    public set randomness(value: number) {
+        this._randomness = value;
+    }
+
+    constructor(rows: number, cols: number, aliveIndicator: string, emptyIndicator: string, randomness: number, infinite?: boolean) {
         this._rows = rows;
         this._cols = cols;
         this._aliveIndicator = aliveIndicator;
         this._emptyIndicator = emptyIndicator;
-        this._field = this.initEmpty();
+        this._infinite = infinite || false;
+        this._field = [];
+        this._randomness = randomness;
     }
 
     /**
      * Create a Field where all Cells are dead
-     * @returns tow dimensional array of Cells
      */
-    private initEmpty(): Cell[][] {
+    initEmpty(){
+        const oldRandomness = this.randomness;
+
+        this.randomness = -1;
+
+        this.initRandom();
+
+        this.randomness = oldRandomness;
+    }
+
+    /**
+     * This function randomly spawn Cells who are alive
+     */
+    initRandom() {
         var field: Cell[][] = [];
 
         for (let rowCount = 0; rowCount < this.rows; rowCount++) {
             let row: Cell[] = [];
             for (let colCount = 0; colCount < this.cols; colCount++) {
-               row.push(new Cell(rowCount, colCount, false));
+                const cell = new Cell(rowCount, colCount, false)
+
+                // for init empty field
+                if (this.randomness === -1) {
+                    row.push(cell);
+                    continue;
+                }
+
+                // set alive
+                cell.isAlive = this.randomAlive();
+
+                row.push(cell);
             }
             field.push(row);
         }
 
-        return field
-    }
-
-    /**
-     * This function randomly spawn Cells who are alive
-     * @param limit min limit for the random generator
-     */
-    initRandom(limit: number) {
-        for (let i = 0; i < this.field.length; i++) {
-            for (let j = 0; j < this.field[i].length; j++) {
-                // get a random number between 1 - 100
-                const random: number = Math.floor(Math.random() * 100) + 1;
-
-                if (random >= limit) {
-                    this.field[i][j].isAlive = true;
-                }
-            }
-        }
+        this.field = field;
     }
 
     /**
@@ -106,9 +133,21 @@ export class Field {
      * @param seedArray Array of cells which should be alive
      */
     initSeed(cells: Cell[]) {
+        this.initEmpty();
+        
         cells.forEach(cell => {
             this.field[cell.xPos][cell.yPos].isAlive = cell.isAlive;
         });
+    }
+
+    /**
+     * Init a pseudo infinite field
+     */
+    initInfinite() {
+        this.infinite = true;
+        this.cols *= 5;
+        this.rows *= 5;
+        this.initRandom();
     }
 
     /**
@@ -118,8 +157,15 @@ export class Field {
     generateOutput(): string {
         var output: string = '';
 
-        for (let i = 0; i < this.field.length; i++) {
-            for (let j = 0; j < this.field[i].length; j++) {
+        // calculate for infinite mode
+        const rows = this.infinite ? this.rows / 5 : this.rows;
+        const cols = this.infinite ? this.cols / 5 : this.cols;
+
+        var i = this.infinite ? rows * 2 : 0;
+        var j = this.infinite ? cols * 2 : 0;
+        
+        for (i = 0; i < rows; i++) {
+            for (j = 0; j < cols; j++) {
                 if (this.field[i][j].isAlive) {
                     output += this.aliveIndicator;
                 } else {
@@ -163,9 +209,13 @@ export class Field {
      */
     private checkCellAt(xPos: number, yPos: number): boolean {
 
-        // if cell is outside the filed return false 
+        // validate the cells at the border of the field
         if (!this.field[xPos] || !this.field[xPos][yPos]) {
-            return false;
+            // if play with border return false
+            if (!this.infinite) return false;
+
+            // if infinite
+            return this.randomAlive();
         }
 
         return this.field[xPos][yPos].isAlive;
@@ -183,9 +233,19 @@ export class Field {
                     return false;
                 }
             }
-            
         }
 
         return true;
+    }
+
+    /**
+     * Function to check if a cell should be alive
+     * @returns true if random is greater or equals randomness
+     */
+    private randomAlive(): boolean {
+         // get a random number between 1 - 100
+         const random: number = Math.floor(Math.random() * 100) + 1;
+
+         return random >= this.randomness;
     }
 }

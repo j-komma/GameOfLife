@@ -18,8 +18,9 @@ export class GameOfLife {
      */
     async play() {
         // Copy actual field in a tmp object
-        var tempField = new Field(this.field.rows, this.field.cols, this.field.aliveIndicator, this.field.emptyIndicator);
-
+        var tempField = new Field(this.field.rows, this.field.cols, this.field.aliveIndicator, this.field.emptyIndicator, this.field.randomness, this.field.infinite);
+        tempField.initEmpty();
+        
         // Check for each Cell if it will life or be dead in the next iteration
         this.field.field.forEach(row => {
             row.forEach(cell => {

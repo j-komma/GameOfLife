@@ -12,7 +12,7 @@ const argv = yargs
         description: 'Seed for start of the game',
         type: 'string',
         alias: 's',
-        conflicts: ['width', 'height', 'randomlimit', 'infinite']
+        conflicts: ['width', 'height', 'randomness', 'infinite']
     })
     .option('width', {
         description: 'width of the field by default the width of the console',
@@ -24,17 +24,17 @@ const argv = yargs
         type: 'number',
         alias: 'h',
     })
-    .option('randomlimit', {
+    .option('randomness', {
         description: 'used to regulate the spawn rate in random mode. 85 by default',
         type: 'number',
         alias: 'r',
-        conflicts: ['seed', 'infinite']
+        conflicts: ['seed']
     })
     .option('infinite', {
         description: 'play in infinite mode',
         type: 'boolean',
         alias: 'i',
-        conflicts: ['seed', 'width', 'height', 'randomlimit']
+        conflicts: ['seed', 'width', 'height']
     })
     .check((argv) => {
         if (argv.height &&  argv.height > process.stdout.rows -3) {
@@ -49,8 +49,8 @@ const argv = yargs
             throw new Error('Height and Width must be greater than 0');
         }
 
-        if (argv.randomlimit && (argv.randomlimit < 1 || argv.randomlimit > 100)) {
-            throw new Error('randomlimit must be in the range 1 - 100');
+        if (argv.randomness && (argv.randomness < 1 || argv.randomness > 100)) {
+            throw new Error('randomness must be in the range 1 - 100');
         }
     
         return true;
@@ -62,24 +62,26 @@ const argv = yargs
 const aliveCell: string = 'X';
 const emptyCell: string = ' ';
 
-// create a new field
 const height = argv.height || process.stdout.rows - 3;
 const width = argv.width || process.stdout.columns;
-const fieldGenerator: Field = new Field(height, width, aliveCell, emptyCell);
+const randomness = argv.randomness || 85;
+
+// create a new field
+const fieldGenerator: Field = new Field(height, width, aliveCell, emptyCell, randomness);
 
 if (argv.infinite) {
-    console.log('Halloooo');
+    fieldGenerator.initInfinite();
 } else if (argv.seed) {
     // read seed-file and init the field
     const seed = new Seed(argv.seed);
     const seedCells: Cell[] = seed.cells;
     fieldGenerator.initSeed(seedCells);
 } else {
-    fieldGenerator.initRandom(argv.randomlimit || 85);
+    fieldGenerator.initRandom();
 }
 
 // create a new game
 const game: GameOfLife = new GameOfLife(fieldGenerator);
 
 // play the game
-setInterval(() => game.play(), 80);
+setInterval(() => game.play(), 100);
