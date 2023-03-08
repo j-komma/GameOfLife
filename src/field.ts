@@ -86,14 +86,15 @@ export class Field {
 
     /**
      * This function randomly spawn Cells who are alive
+     * @param limit min limit for the random generator
      */
-    initRandom() {
+    initRandom(limit: number) {
         for (let i = 0; i < this.field.length; i++) {
             for (let j = 0; j < this.field[i].length; j++) {
                 // get a random number between 1 - 100
                 const random: number = Math.floor(Math.random() * 100) + 1;
 
-                if (random >= 85) {
+                if (random >= limit) {
                     this.field[i][j].isAlive = true;
                 }
             }
