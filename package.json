@@ -2,10 +2,15 @@
   "name": "gameoflife",
   "version": "1.0.0",
   "description": "A NodeJS CLI for Conways Game of Life",
-  "main": "index.js",
+  "main": "./dist/main.js",
+  "bin": {
+    "gameoflife": "./dist/main.js"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ts-node ./src/main.ts"
+    "start": "ts-node ./src/main.ts",
+    "create": "npm run build && npm run local",
+    "build": "tsc -p .",
+    "local": "sudo npm i -g"
   },
   "repository": {
     "type": "git",
