@@ -73,7 +73,7 @@ if (argv.infinite) {
     fieldGenerator.initInfinite();
 } else if (argv.seed) {
     // read seed-file and init the field
-    const seed = new Seed(argv.seed);
+    const seed = new Seed(argv.seed, fieldGenerator.rows, fieldGenerator. cols);
     const seedCells: Cell[] = seed.cells;
     fieldGenerator.initSeed(seedCells);
 } else {

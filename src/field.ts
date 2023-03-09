@@ -18,6 +18,8 @@ export class Field {
 
     private _randomness: number;
 
+    private _multiplier: number;
+
 
     // Getter / Setter
 
@@ -77,6 +79,17 @@ export class Field {
         this._randomness = value;
     }
 
+    public get multiplier(): number {
+        return this._multiplier;
+    }
+
+    public set multiplier(value: number) {
+        if (value % 2 === 0) {
+            throw new Error('Value must be odd');
+        }
+        this._multiplier = value;
+    }
+
     constructor(rows: number, cols: number, aliveIndicator: string, emptyIndicator: string, randomness: number, infinite?: boolean) {
         this._rows = rows;
         this._cols = cols;
@@ -85,6 +98,7 @@ export class Field {
         this._infinite = infinite || false;
         this._field = [];
         this._randomness = randomness;
+        this._multiplier = 5
     }
 
     /**
@@ -135,6 +149,7 @@ export class Field {
     initSeed(cells: Cell[]) {
         this.initEmpty();
         
+        // turn cells alive
         cells.forEach(cell => {
             this.field[cell.xPos][cell.yPos].isAlive = cell.isAlive;
         });
@@ -145,8 +160,8 @@ export class Field {
      */
     initInfinite() {
         this.infinite = true;
-        this.cols *= 5;
-        this.rows *= 5;
+        this.cols *= this.multiplier;
+        this.rows *= this.multiplier;
         this.initRandom();
     }
 
@@ -158,11 +173,11 @@ export class Field {
         var output: string = '';
 
         // calculate for infinite mode
-        const rows = this.infinite ? this.rows / 5 : this.rows;
-        const cols = this.infinite ? this.cols / 5 : this.cols;
+        const rows = this.infinite ? this.rows / this.multiplier : this.rows;
+        const cols = this.infinite ? this.cols / this.multiplier : this.cols;
 
-        var i = this.infinite ? rows * 2 : 0;
-        var j = this.infinite ? cols * 2 : 0;
+        var i = this.infinite ? rows * (this.multiplier -1  / 2) : 0;
+        var j = this.infinite ? cols * (this.multiplier -1  / 2) : 0;
         
         for (i = 0; i < rows; i++) {
             for (j = 0; j < cols; j++) {
