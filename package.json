@@ -10,7 +10,7 @@
     "start": "ts-node ./src/main.ts",
     "create": "npm run build && npm run local",
     "build": "tsc -p .",
-    "local": "sudo npm i -g"
+    "local": "npm i -g"
   },
   "repository": {
     "type": "git",
