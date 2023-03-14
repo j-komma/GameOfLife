@@ -27,6 +27,10 @@ cd GameOfLife
 npm i
 ```
 
+```bash
+npm i -g ts-node
+```
+
 # Install global
 
 to play the game as a global argument execute following steps in addition to those from "Install".
